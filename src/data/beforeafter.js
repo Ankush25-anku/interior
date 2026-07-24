@@ -2,8 +2,8 @@ export const RENOVATION_PROJECTS = [
   {
     title: "Modern Living Room",
     shortTitle: "Living Room",
-    before: "/images/before-after/living-before.webp",
-    after: "/images/before-after/living-after.webp",
+    before: "/images/before-after/before-living.webp",
+    after: "/images/before-after/after-living.webp",
   },
   {
     title: "Luxury Kitchen",
