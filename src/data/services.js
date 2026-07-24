@@ -1,0 +1,48 @@
+import {
+  PiCookingPot,
+  PiArchive,
+  PiForkKnife,
+  PiCube,
+  PiTelevisionSimple,
+  PiBooks,
+  PiSquaresFour,
+  PiLightbulbFilament,
+  PiImageSquare,
+  PiPaintRoller,
+  PiBathtub,
+  PiFlowerLotus,
+  PiDoorOpen,
+  PiArmchair,
+  PiRocketLaunch,
+  PiHammer,
+  PiGridFour,
+  PiWrench,
+} from "react-icons/pi";
+
+const IMG = {
+  kitchen: "/images/services/modular-kitchen.webp",
+  wardrobe: "/images/services/wardrobe.webp",
+  ceiling: "/images/services/ceiling.webp",
+  renovation: "/images/services/renovation.webp",
+};
+
+export const SERVICES = [
+  { title: "Modular Kitchen", desc: "Ergonomic, chef-grade kitchens tailored to your rituals.", Icon: PiCookingPot, image: IMG.kitchen },
+  { title: "Storage & Wardrobe", desc: "Seamless storage systems disguised as fine cabinetry.", Icon: PiArchive, image: IMG.wardrobe },
+  { title: "Crockery Units", desc: "Curated display units for glassware and heirlooms.", Icon: PiForkKnife, image: IMG.kitchen },
+  { title: "Space Saving Furniture", desc: "Multi-functional pieces engineered for compact luxury.", Icon: PiCube, image: IMG.wardrobe },
+  { title: "TV Units", desc: "Sculptural media consoles that anchor the living room.", Icon: PiTelevisionSimple, image: IMG.wardrobe },
+  { title: "Study Tables", desc: "Focused workspaces with considered light and form.", Icon: PiBooks, image: IMG.wardrobe },
+  { title: "False Ceiling", desc: "Layered ceiling architecture for depth and drama.", Icon: PiSquaresFour, image: IMG.ceiling },
+  { title: "Designer Lights", desc: "Statement fixtures that sculpt mood through light.", Icon: PiLightbulbFilament, image: IMG.ceiling },
+  { title: "Wallpaper", desc: "Textural wall stories in silk, linen and stone finishes.", Icon: PiImageSquare, image: IMG.ceiling },
+  { title: "Wall Paint", desc: "Bespoke tonal palettes mixed for every room's light.", Icon: PiPaintRoller, image: IMG.ceiling },
+  { title: "Bathroom Interiors", desc: "Spa-grade bathrooms in marble, brass and warm stone.", Icon: PiBathtub, image: IMG.renovation },
+  { title: "Pooja Units", desc: "Serene sacred spaces crafted with quiet reverence.", Icon: PiFlowerLotus, image: IMG.wardrobe },
+  { title: "Foyer Designs", desc: "A considered first impression for every home.", Icon: PiDoorOpen, image: IMG.ceiling },
+  { title: "Movable Furniture", desc: "Free-standing pieces in solid wood and natural stone.", Icon: PiArmchair, image: IMG.wardrobe },
+  { title: "Kids Bedroom", desc: "Playful, safe interiors that grow with your child.", Icon: PiRocketLaunch, image: IMG.wardrobe },
+  { title: "Home Renovation", desc: "Full-scale transformations, structure to finish.", Icon: PiHammer, image: IMG.renovation },
+  { title: "Tiles Installation", desc: "Precision laid stone and porcelain surfacing.", Icon: PiGridFour, image: IMG.renovation },
+  { title: "Plumbing Solutions", desc: "Invisible infrastructure, flawlessly executed.", Icon: PiWrench, image: IMG.renovation },
+];
