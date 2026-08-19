@@ -13,7 +13,7 @@ function ProjectCard({ project, onHover, isFirst }) {
   return (
     <motion.div
       layout
-      className={`group relative mb-6 w-full overflow-hidden rounded-2xl break-inside-avoid ${project.aspect}`}
+      className={`gallery-card group relative mb-6 w-full overflow-hidden rounded-2xl break-inside-avoid ${project.aspect}`}
       data-cursor="hover"
       initial={
         isFirst
@@ -57,6 +57,9 @@ function ProjectCard({ project, onHover, isFirst }) {
         <h3 className="font-display mt-1 text-2xl font-normal text-ivory">
           {project.title}
         </h3>
+        {project.location && (
+          <p className="mt-1 text-xs text-ivory/60">{project.location}</p>
+        )}
       </div>
     </motion.div>
   );

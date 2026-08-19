@@ -37,7 +37,7 @@ function ServiceCard({ service }) {
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       data-cursor="hover"
-      className="group relative h-[72vh] w-[90vw] shrink-0 overflow-hidden rounded-3xl border border-ivory/10 transition-colors duration-500 hover:border-gold/40 md:h-[420px] md:w-[280px] lg:w-[340px]"
+      className="service-card group relative h-[72vh] w-[90vw] shrink-0 overflow-hidden rounded-3xl border border-ivory/10 transition-colors duration-500 hover:border-gold/40 md:h-[420px] md:w-[280px] lg:w-[340px]"
       style={{ transformStyle: "preserve-3d" }}
     >
       <Image

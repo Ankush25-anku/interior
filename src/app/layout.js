@@ -3,6 +3,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/ui/CustomCursor";
 import FloatingActions from "@/components/FloatingActions";
+import AppShell from "@/components/layout/AppShell";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -33,7 +34,7 @@ export default function RootLayout({ children }) {
         <div className="noise-overlay" />
         <CustomCursor />
         <SmoothScroll>
-          {children}
+          <AppShell>{children}</AppShell>
           <FloatingActions />
         </SmoothScroll>
       </body>

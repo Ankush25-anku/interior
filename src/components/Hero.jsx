@@ -9,10 +9,12 @@ import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RoomScene from "@/components/hero/RoomScene";
 import useMagnetic from "@/hooks/useMagnetic";
+import { useReady } from "@/components/layout/AppShell";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
-export default function Hero({ ready }) {
+export default function Hero() {
+  const ready = useReady();
   const sectionRef = useRef(null);
   const imageRef = useRef(null);
   const canvasWrapRef = useRef(null);

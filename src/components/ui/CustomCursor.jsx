@@ -16,10 +16,10 @@ const ZONE_META = {
 function resolveZone(target) {
   if (!(target instanceof Element)) return null;
 
-  const gallery = target.closest("#projects [data-cursor='hover']");
+  const gallery = target.closest(".gallery-card[data-cursor='hover']");
   if (gallery) return { zone: "gallery", el: gallery };
 
-  const services = target.closest("#services [data-cursor='hover']");
+  const services = target.closest(".service-card[data-cursor='hover']");
   if (services) return { zone: "services", el: services };
 
   const hero3d = target.closest("#top canvas");

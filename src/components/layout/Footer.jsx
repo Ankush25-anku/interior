@@ -1,22 +1,21 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaInstagram, FaPinterestP, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import useMagnetic from "@/hooks/useMagnetic";
-import { useLenis } from "@/components/SmoothScroll";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const NAV_LINKS = [
-  { label: "Home", href: "#top" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Process", href: "#process" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Projects", href: "/projects" },
+  { label: "Process", href: "/process" },
+  { label: "Testimonials", href: "/testimonials" },
 ];
 const SERVICE_LINKS = [
   "Residential Interiors",
@@ -41,7 +40,6 @@ export default function Footer() {
   const wordmarkRef = useRef(null);
   const lineRef = useRef(null);
   const ctaRef = useMagnetic(0.25);
-  const lenis = useLenis();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -85,12 +83,6 @@ export default function Footer() {
     return () => ctx.revert();
   }, []);
 
-  const goTo = (e, href) => {
-    e.preventDefault();
-    const el = document.querySelector(href);
-    if (el && lenis) lenis.scrollTo(el, { offset: -40, duration: 1.4 });
-  };
-
   return (
     <footer
       id="footer"
@@ -114,15 +106,14 @@ export default function Footer() {
           </h2>
         </div>
 
-        <a
+        <Link
           ref={ctaRef}
-          href="#contact"
-          onClick={(e) => goTo(e, "#contact")}
+          href="/contact"
           data-cursor="hover"
           className="inline-flex w-fit items-center gap-3 rounded-full bg-gold px-9 py-4 text-xs uppercase tracking-[0.25em] text-ink transition-shadow duration-300 hover:shadow-[0_0_40px_rgba(201,164,92,0.4)]"
         >
           Book Consultation
-        </a>
+        </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-10 py-16 md:grid-cols-4">
@@ -139,14 +130,13 @@ export default function Footer() {
           <ul className="mt-5 space-y-3">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
-                  onClick={(e) => goTo(e, link.href)}
                   data-cursor="hover"
                   className="text-sm text-ivory/75 transition-colors hover:text-gold"
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
