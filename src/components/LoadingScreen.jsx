@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 
 export default function LoadingScreen({ onComplete }) {
@@ -9,6 +10,7 @@ export default function LoadingScreen({ onComplete }) {
   const curtainTopRef = useRef(null);
   const curtainBottomRef = useRef(null);
   const logoRef = useRef(null);
+  const goldLineRef = useRef(null);
   const linesRef = useRef(null);
   const [count, setCount] = useState(0);
 
@@ -22,17 +24,24 @@ export default function LoadingScreen({ onComplete }) {
       },
     });
 
-    tl.set(logoRef.current, { opacity: 0, y: 24 });
+    tl.set(logoRef.current, { opacity: 0, scale: 0.94, filter: "blur(8px)" });
+    tl.set(goldLineRef.current, { scaleX: 0 });
     tl.set(linesRef.current.querySelectorAll("line, path"), {
       strokeDashoffset: (i, el) => el.getTotalLength ? el.getTotalLength() : 1000,
       strokeDasharray: (i, el) => el.getTotalLength ? el.getTotalLength() : 1000,
     });
 
-    tl.to(logoRef.current, { opacity: 1, y: 0, duration: 1.1, ease: "power3.out" }, 0.1);
+    tl.to(
+      logoRef.current,
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.1, ease: "power3.out" },
+      0.1
+    );
+
+    tl.to(goldLineRef.current, { scaleX: 1, duration: 0.7, ease: "power3.out" }, 0.55);
 
     tl.to(
       linesRef.current.querySelectorAll("line, path"),
-      { strokeDashoffset: 0, duration: 1.8, ease: "power2.inOut", stagger: 0.08 },
+      { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut", stagger: 0.06 },
       0.2
     );
 
@@ -40,7 +49,7 @@ export default function LoadingScreen({ onComplete }) {
       counter,
       {
         value: 100,
-        duration: 2.2,
+        duration: 1.4,
         ease: "power2.inOut",
         onUpdate: () => setCount(Math.floor(counter.value)),
       },
@@ -93,13 +102,16 @@ export default function LoadingScreen({ onComplete }) {
           <path d="M0 300 L500 100 L1000 300" stroke="#c9a45c" strokeWidth="0.5" />
         </svg>
 
-        <div ref={logoRef} className="relative flex flex-col items-center gap-4">
-          <span className="font-display text-3xl italic tracking-wide text-ivory md:text-4xl">
-            Maison Verre
-          </span>
-          <span className="text-[0.65rem] uppercase tracking-[0.5em] text-gold">
-            Interior Studio
-          </span>
+        <div ref={logoRef} className="relative flex flex-col items-center gap-5">
+          <Image
+            src="/images/logo/samskriti-logo-transparent.webp"
+            alt="Samskriti Interiors"
+            width={743}
+            height={480}
+            priority
+            className="h-auto w-56 sm:w-64 md:w-72"
+          />
+          <div ref={goldLineRef} className="h-px w-16 origin-center bg-gold" />
         </div>
 
         <div

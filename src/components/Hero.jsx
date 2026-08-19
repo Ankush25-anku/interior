@@ -18,7 +18,6 @@ export default function Hero({ ready }) {
   const canvasWrapRef = useRef(null);
   const eyebrowRef = useRef(null);
   const headingRef = useRef(null);
-  const subRef = useRef(null);
   const ctaWrapRef = useRef(null);
   const scrollRef = useRef(null);
   const pointer = useRef({ x: 0, y: 0 });
@@ -29,9 +28,28 @@ export default function Hero({ ready }) {
   // the 3D scene light — purely a perf tweak, no visual/layout change. Starts
   // at the fine-pointer default so SSR/first paint never mismatches on hydrate.
   const [maxDpr, setMaxDpr] = useState(1.8);
+  const [lowPower, setLowPower] = useState(false);
+  // the WebGL scene only needs to render while the Hero is anywhere near the
+  // viewport — otherwise it's spending a full frame budget on pixels nobody
+  // can see, every frame, for the rest of the session
+  const [canvasVisible, setCanvasVisible] = useState(true);
 
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) setMaxDpr(1.2);
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      setMaxDpr(1.2);
+      setLowPower(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setCanvasVisible(entry.isIntersecting),
+      { rootMargin: "50% 0px 50% 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -39,6 +57,7 @@ export default function Hero({ ready }) {
     const moveImgY = gsap.quickTo(imageRef.current, "y", { duration: 0.9, ease: "power3" });
 
     const onMove = (e) => {
+      if (!canvasVisible) return;
       pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       pointer.current.y = (e.clientY / window.innerHeight) * 2 - 1;
 
@@ -46,9 +65,9 @@ export default function Hero({ ready }) {
       moveImgX(pointer.current.x * -16);
       moveImgY(pointer.current.y * -10);
     };
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
-  }, []);
+  }, [canvasVisible]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -97,7 +116,7 @@ export default function Hero({ ready }) {
   useEffect(() => {
     if (!ready) return;
 
-    const split = new SplitText(headingRef.current, { type: "chars, lines" });
+    const split = new SplitText(headingRef.current, { type: "words, lines" });
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
     tl.fromTo(
@@ -122,31 +141,24 @@ export default function Hero({ ready }) {
     );
 
     tl.fromTo(
-      split.chars,
-      { yPercent: 120, rotate: 5, opacity: 0 },
+      split.words,
+      { yPercent: 120, rotate: 3, opacity: 0 },
       {
         yPercent: 0,
         rotate: 0,
         opacity: 1,
-        duration: 1.3,
-        stagger: 0.025,
+        duration: 1.1,
+        stagger: 0.05,
         ease: "power3.out",
       },
       0.3
     );
 
     tl.fromTo(
-      subRef.current,
-      { y: 24, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1 },
-      "-=0.7"
-    );
-
-    tl.fromTo(
       ctaWrapRef.current.children,
       { y: 20, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8, stagger: 0.12 },
-      "-=0.6"
+      "-=0.5"
     );
 
     tl.fromTo(
@@ -210,11 +222,12 @@ export default function Hero({ ready }) {
         <Canvas
           shadows
           dpr={[1, maxDpr]}
+          frameloop={canvasVisible ? "always" : "never"}
           camera={{ position: [0, 0.6, 5.2], fov: 38 }}
-          gl={{ toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
+          gl={{ toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05, powerPreference: "high-performance" }}
         >
           <Suspense fallback={null}>
-            <RoomScene pointer={pointer} sceneProgress={sceneProgress} />
+            <RoomScene pointer={pointer} sceneProgress={sceneProgress} lowPower={lowPower} />
           </Suspense>
         </Canvas>
       </div>
@@ -225,32 +238,24 @@ export default function Hero({ ready }) {
           ref={eyebrowRef}
           className="mb-8 block text-xs uppercase tracking-[0.5em] text-gold"
         >
-          Maison Verre Interior Studio
+          Luxury Interior Design Studio
         </span>
 
         <h1
           ref={headingRef}
-          className="font-hero-display max-w-5xl text-[clamp(3rem,12vw,5rem)] font-normal leading-[0.9] tracking-[-0.04em] text-[#f8f3ea] [text-shadow:0_15px_50px_rgba(0,0,0,0.35)] md:text-[clamp(5rem,8vw,9rem)]"
+          className="font-hero-display max-w-2xl text-[clamp(1.75rem,7vw,2.5rem)] font-normal leading-[1.12] tracking-[-0.02em] text-[#f8f3ea] [text-shadow:0_15px_50px_rgba(0,0,0,0.35)] md:max-w-4xl md:text-[clamp(2.25rem,4vw,3.75rem)]"
         >
-          Designing Spaces
-          <br className="hidden md:block" />
-          <span className="italic text-gold">That Inspire</span> Living
+          Crafting timeless spaces where architecture meets{" "}
+          <span className="italic text-gold">emotion</span>.
         </h1>
-
-        <p
-          ref={subRef}
-          className="mt-10 max-w-md text-sm uppercase tracking-[0.3em] text-ivory/80"
-        >
-          Bespoke interior architecture &mdash; creating timeless luxury spaces.
-        </p>
 
         <div
           ref={ctaWrapRef}
-          className="mt-12 flex flex-wrap items-center justify-center gap-4 [@media(max-height:700px)]:mt-6 sm:mt-14 sm:gap-5"
+          className="mt-10 flex flex-wrap items-center justify-center gap-4 [@media(max-height:700px)]:mt-6 sm:mt-12 sm:gap-5"
         >
           <a
             ref={primaryCta}
-            href="#footer"
+            href="#contact"
             data-cursor="hover"
             className="rounded-full bg-gold px-7 py-3.5 text-xs uppercase tracking-[0.25em] text-espresso transition-shadow duration-300 hover:shadow-[0_0_40px_rgba(201,164,92,0.5)] sm:px-9 sm:py-4"
           >
@@ -258,11 +263,11 @@ export default function Hero({ ready }) {
           </a>
           <a
             ref={secondaryCta}
-            href="#gallery"
+            href="#projects"
             data-cursor="hover"
             className="rounded-full border border-[rgba(255,255,255,0.35)] bg-[rgba(255,255,255,0.08)] px-7 py-3.5 text-xs uppercase tracking-[0.25em] text-ivory backdrop-blur-md transition-colors duration-300 hover:border-gold hover:text-gold sm:px-9 sm:py-4"
           >
-            View Projects
+            Explore Projects
           </a>
         </div>
       </div>

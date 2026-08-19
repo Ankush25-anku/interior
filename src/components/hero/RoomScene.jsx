@@ -109,7 +109,7 @@ function Doorway() {
   );
 }
 
-export default function RoomScene({ pointer, sceneProgress }) {
+export default function RoomScene({ pointer, sceneProgress, lowPower = false }) {
   const group = useRef(null);
   const lookTarget = useRef(new THREE.Vector3(0, 0.35, 0));
   const { camera, scene } = useThree();
@@ -171,8 +171,8 @@ export default function RoomScene({ pointer, sceneProgress }) {
           position={[3, 5, 2]}
           intensity={1.1}
           color="#f4d9a0"
-          castShadow
-          shadow-mapSize={[1024, 1024]}
+          castShadow={!lowPower}
+          shadow-mapSize={lowPower ? [512, 512] : [1024, 1024]}
           shadow-camera-near={1}
           shadow-camera-far={10}
           shadow-camera-left={-3}
@@ -216,7 +216,7 @@ export default function RoomScene({ pointer, sceneProgress }) {
         <Doorway />
 
         <Sparkles
-          count={45}
+          count={lowPower ? 22 : 45}
           scale={[5, 2.4, 5]}
           position={[0, 0.8, 0]}
           size={1.6}
@@ -231,9 +231,14 @@ export default function RoomScene({ pointer, sceneProgress }) {
           scale={8}
           blur={2.5}
           far={2}
-          resolution={512}
+          resolution={lowPower ? 256 : 512}
+          frames={lowPower ? 1 : Infinity}
         />
-        <Environment preset="apartment" environmentIntensity={0.5} resolution={256} />
+        <Environment
+          preset="apartment"
+          environmentIntensity={0.5}
+          resolution={lowPower ? 128 : 256}
+        />
       </group>
     </>
   );

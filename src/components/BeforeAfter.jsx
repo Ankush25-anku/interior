@@ -202,7 +202,7 @@ export default function BeforeAfter() {
                   >
                     <Image
                       src={project.after}
-                      alt={`${project.title} after the Maison Verre renovation`}
+                      alt={`${project.title} after the Samskriti Interiors renovation`}
                       fill
                       sizes="(min-width: 1024px) 60vw, 100vw"
                       className="object-cover"
@@ -240,7 +240,7 @@ export default function BeforeAfter() {
                   >
                     <Image
                       src={project.before}
-                      alt={`${project.title} before the Maison Verre renovation`}
+                      alt={`${project.title} before the Samskriti Interiors renovation`}
                       fill
                       sizes="(min-width: 1024px) 60vw, 100vw"
                       className="object-cover"

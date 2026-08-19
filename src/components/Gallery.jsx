@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { PROJECTS } from "@/data/gallery";
+import { PROJECTS, PROJECT_CATEGORIES } from "@/data/gallery";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function ProjectCard({ project, onHover, isFirst }) {
   return (
     <motion.div
+      layout
       className={`group relative mb-6 w-full overflow-hidden rounded-2xl break-inside-avoid ${project.aspect}`}
       data-cursor="hover"
       initial={
@@ -20,6 +21,7 @@ function ProjectCard({ project, onHover, isFirst }) {
           : { opacity: 0, y: 60, clipPath: "inset(12% 12% 12% 12%)" }
       }
       whileInView={{ opacity: 1, y: 0, scale: 1, clipPath: "inset(0% 0% 0% 0%)" }}
+      exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={() => onHover(true)}
@@ -64,6 +66,15 @@ export default function Gallery() {
   const containerRef = useRef(null);
   const gridRef = useRef(null);
   const [hovering, setHovering] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const filteredProjects = useMemo(
+    () =>
+      activeCategory === "All"
+        ? PROJECTS
+        : PROJECTS.filter((project) => project.category === activeCategory),
+    [activeCategory]
+  );
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -105,22 +116,44 @@ export default function Gallery() {
 
   return (
     <section
-      id="gallery"
+      id="projects"
       ref={containerRef}
       onMouseMove={handleMouseMove}
       className="relative w-full bg-ivory px-6 py-28 md:px-16"
     >
-      <div className="mb-14">
-        <span className="text-xs uppercase tracking-[0.35em] text-gold">Gallery</span>
-        <h2 className="font-display mt-4 max-w-xl text-4xl font-normal text-ink md:text-5xl">
-          Selected Projects
-        </h2>
+      <div className="mb-10 flex flex-col gap-8 md:mb-14 md:flex-row md:items-end md:justify-between">
+        <div>
+          <span className="text-xs uppercase tracking-[0.35em] text-gold">Portfolio</span>
+          <h2 className="font-display mt-4 max-w-xl text-4xl font-normal text-ink md:text-5xl">
+            Selected Projects
+          </h2>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {PROJECT_CATEGORIES.map((category) => (
+            <button
+              key={category}
+              type="button"
+              data-cursor="hover"
+              onClick={() => setActiveCategory(category)}
+              className={`rounded-full border px-4 py-2 text-[0.65rem] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                activeCategory === category
+                  ? "border-gold bg-gold text-ink"
+                  : "border-ink/15 text-ink/60 hover:border-gold hover:text-gold"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div ref={gridRef} className="columns-1 gap-6 sm:columns-2 lg:columns-3">
-        {PROJECTS.map((project, i) => (
-          <ProjectCard key={project.title} project={project} onHover={setHoveringGuarded} isFirst={i === 0} />
-        ))}
+        <AnimatePresence mode="popLayout">
+          {filteredProjects.map((project, i) => (
+            <ProjectCard key={project.title} project={project} onHover={setHoveringGuarded} isFirst={i === 0} />
+          ))}
+        </AnimatePresence>
       </div>
 
       <motion.div

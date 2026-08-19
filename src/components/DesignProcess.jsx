@@ -15,7 +15,7 @@ const STEPS = [
   },
   {
     n: "02",
-    title: "Space Planning",
+    title: "Concept Development",
     desc: "Every square foot is choreographed for flow, light, and proportion, before a single material is chosen.",
   },
   {
@@ -35,7 +35,7 @@ const STEPS = [
   },
   {
     n: "06",
-    title: "Final Handover",
+    title: "Final Reveal",
     desc: "A final walkthrough, styled and complete — ready for the life that happens next inside it.",
   },
 ];

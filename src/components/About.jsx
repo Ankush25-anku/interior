@@ -116,13 +116,20 @@ export default function About() {
       });
 
       // continuous smooth "Ken Burns" scale on the photograph itself — isolated
-      // to its own element/property so it never fights the wrap's exit scale
+      // to its own element/property so it never fights the wrap's exit scale.
+      // Paused while the section is off-screen so it isn't ticking forever.
       gsap.to(imageRef.current, {
         scale: 1.1,
         duration: 22,
         ease: "sine.inOut",
         repeat: -1,
         yoyo: true,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          toggleActions: "play pause resume pause",
+        },
       });
     }, sectionRef);
 
@@ -175,7 +182,7 @@ export default function About() {
 
       <div className="relative z-10 flex w-full flex-col md:w-1/2">
         <span className="mb-8 text-xs uppercase tracking-[0.35em] text-gold">
-          About the Studio
+          About Samskriti Interiors
         </span>
 
         <div
@@ -199,10 +206,13 @@ export default function About() {
           ref={paraRef}
           className="mt-10 max-w-[550px] text-base leading-relaxed text-[#6b6257]"
         >
-          Maison Verre is a boutique interior architecture studio devoted to
-          quiet luxury &mdash; where materiality, light and proportion are
-          composed with the same discipline as fine architecture. We design
-          homes that feel inevitable.
+          Samskriti Interiors was founded on a simple belief: a home should
+          feel inevitable, not designed. We blend the discipline of
+          architecture with the warmth of Indian materiality &mdash; stone,
+          brass, teak, light &mdash; into interiors that age gracefully and
+          belong entirely to the people who live in them. Our vision is to
+          redefine luxury as something quiet: considered proportion over
+          ornament, texture over trend, permanence over fashion.
         </p>
 
         <div ref={statsRef} className="mt-14 grid grid-cols-3 gap-6 border-t border-ink/10 pt-8">
@@ -226,7 +236,7 @@ export default function About() {
             <Image
               ref={imageRef}
               src="/images/about/studio.webp"
-              alt="Maison Verre studio interior detail"
+              alt="Samskriti Interiors studio interior detail"
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover"

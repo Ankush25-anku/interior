@@ -18,9 +18,9 @@ const manrope = Manrope({
 });
 
 export const metadata = {
-  title: "Maison Verre | Luxury Interior Studio",
+  title: "Samskriti Interiors | Luxury Interior Design Studio",
   description:
-    "An award-winning interior design studio crafting cinematic, architectural living spaces.",
+    "Samskriti Interiors crafts timeless spaces where architecture meets emotion — an award-winning luxury interior design studio.",
 };
 
 export default function RootLayout({ children }) {

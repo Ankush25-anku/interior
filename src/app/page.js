@@ -10,11 +10,12 @@ import DesignProcess from "@/components/DesignProcess";
 import Gallery from "@/components/Gallery";
 import BeforeAfter from "@/components/BeforeAfter";
 import Testimonial from "@/components/Testimonial";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import HeroAboutTransition from "@/components/transitions/HeroAboutTransition";
 import AboutServicesTransition from "@/components/transitions/AboutServicesTransition";
 import ServicesGalleryTransition from "@/components/transitions/ServicesGalleryTransition";
-import GalleryTestimonialsTransition from "@/components/transitions/GalleryTestimonialsTransition";
+import ProcessTestimonialsTransition from "@/components/transitions/ProcessTestimonialsTransition";
 import TestimonialsFooterTransition from "@/components/transitions/TestimonialsFooterTransition";
 
 export default function Home() {
@@ -30,13 +31,15 @@ export default function Home() {
         <About />
         <AboutServicesTransition />
         <Services />
-        <DesignProcess />
         <ServicesGalleryTransition />
         <Gallery />
         <BeforeAfter />
-        <GalleryTestimonialsTransition />
+        <AboutServicesTransition />
+        <DesignProcess />
+        <ProcessTestimonialsTransition />
         <Testimonial />
         <TestimonialsFooterTransition />
+        <Contact />
       </main>
       <Footer />
     </>

@@ -22,11 +22,14 @@ export default function ServicesGalleryTransition() {
         },
       });
 
-      // a service "card" silhouette expanding into a full-bleed "image" rectangle
+      // a service "card" silhouette expanding into a full-bleed "image" rectangle —
+      // the box is sized to its final dimensions in CSS and grows via scaleX/scaleY
+      // (compositor-only) instead of animating width/height, which would force a
+      // layout reflow on every scroll tick
       tl.fromTo(
         cardRef.current,
-        { width: "9rem", height: "12rem", opacity: 0, borderRadius: "1.5rem" },
-        { width: "20rem", height: "13rem", opacity: 1, borderRadius: "0.5rem", ease: "none" },
+        { scaleX: 9 / 20, scaleY: 12 / 13, opacity: 0, borderRadius: "1.5rem" },
+        { scaleX: 1, scaleY: 1, opacity: 1, borderRadius: "0.5rem", ease: "none" },
         0
       ).to(cardRef.current, { opacity: 0, scale: 1.05, ease: "none" }, 0.75);
 
@@ -56,7 +59,7 @@ export default function ServicesGalleryTransition() {
       />
       <div
         ref={cardRef}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-gold/50 bg-gold/5"
+        className="absolute left-1/2 top-1/2 h-52 w-80 -translate-x-1/2 -translate-y-1/2 border border-gold/50 bg-gold/5"
       />
     </div>
   );

@@ -85,13 +85,16 @@ export default function Testimonial() {
                 &ldquo;{current.quote}&rdquo;
               </p>
 
-              <div className="mt-8">
+              <div className="mt-8 flex flex-col items-center gap-2">
                 <div className="text-sm font-medium tracking-wide text-ink">
                   {current.name}
                 </div>
-                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-ink/50">
-                  {current.role}
+                <div className="text-xs uppercase tracking-[0.2em] text-ink/50">
+                  {current.role} &mdash; {current.location}
                 </div>
+                <span className="mt-2 rounded-full border border-gold/40 px-3 py-1 text-[0.6rem] uppercase tracking-[0.25em] text-gold">
+                  {current.projectType}
+                </span>
               </div>
             </motion.div>
           </AnimatePresence>
