@@ -15,29 +15,6 @@ const variants = {
   exit: { opacity: 0, y: -12, scale: 0.985, filter: "blur(8px)" },
 };
 
-// resolves once every <img> inside `container` has finished loading (or
-// fails), plus web fonts — both change layout height after the fact, which
-// silently stales any ScrollTrigger start/end positions calculated earlier.
-// Capped at 4s so a slow/broken image can't block the refresh forever.
-function waitForLayoutSettle(container) {
-  const imgPromises = container
-    ? Array.from(container.querySelectorAll("img")).map((img) =>
-        img.complete
-          ? Promise.resolve()
-          : new Promise((resolve) => {
-              img.addEventListener("load", resolve, { once: true });
-              img.addEventListener("error", resolve, { once: true });
-            })
-      )
-    : [];
-  const fontsReady =
-    typeof document !== "undefined" && document.fonts?.ready
-      ? document.fonts.ready
-      : Promise.resolve();
-  const timeout = new Promise((resolve) => setTimeout(resolve, 4000));
-  return Promise.race([Promise.all([...imgPromises, fontsReady]), timeout]);
-}
-
 export default function PageTransition({ children }) {
   const pathname = usePathname();
   const lenis = useLenis();
@@ -50,20 +27,6 @@ export default function PageTransition({ children }) {
     const id = requestAnimationFrame(() => lenis?.resize());
     return () => cancelAnimationFrame(id);
   }, [pathname, lenis]);
-
-  // every route's images/fonts settle asynchronously and can change section
-  // heights after ScrollTrigger has already calculated positions — refresh
-  // again once they're actually done loading, on top of the refresh that
-  // follows the enter transition below
-  useEffect(() => {
-    let cancelled = false;
-    waitForLayoutSettle(wrapperRef.current).then(() => {
-      if (!cancelled) ScrollTrigger.refresh();
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [pathname]);
 
   // Framer Motion resolves scale/y back to `transform: none` once they
   // settle at their identity values, but it leaves `filter: blur(0px)` as a

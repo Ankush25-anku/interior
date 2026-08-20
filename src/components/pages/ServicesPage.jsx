@@ -47,7 +47,7 @@ function ServiceGridCard({ service, index }) {
         <h3 className="font-display text-2xl font-normal text-ivory md:text-3xl">
           {service.title}
         </h3>
-        <p className="max-w-sm text-sm leading-relaxed text-ivory/70">{service.desc}</p>
+        <p className="max-w-sm text-sm leading-relaxed text-ivory/70">{service.description}</p>
         <span className="mt-1 text-[0.65rem] uppercase tracking-[0.3em] text-gold opacity-0 transition-opacity duration-500 group-hover:opacity-100">
           Explore &rarr;
         </span>

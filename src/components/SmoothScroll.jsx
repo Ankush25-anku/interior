@@ -40,6 +40,12 @@ export default function SmoothScroll({ children }) {
 
     ScrollTrigger.defaults({ scroller: window });
 
+    // one-shot correction, not a poll: section ScrollTriggers are created
+    // as soon as each component mounts, which can be before a web font
+    // finishes swapping in and reflowing text. document.fonts.ready
+    // resolves exactly once, exactly when that's no longer a risk.
+    document.fonts?.ready?.then(() => ScrollTrigger.refresh());
+
     return () => {
       instance.destroy();
       gsap.ticker.remove(instance.raf);

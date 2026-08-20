@@ -222,7 +222,7 @@ export default function Hero() {
       {/* layer 3 — 3D room scene */}
       <div ref={canvasWrapRef} className="absolute inset-0 z-[3] opacity-0">
         <Canvas
-          shadows
+          shadows={{ type: THREE.PCFShadowMap }}
           dpr={[1, maxDpr]}
           frameloop={canvasVisible ? "always" : "never"}
           camera={{ position: [0, 0.6, 5.2], fov: 38 }}

@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function LoadingScreen({ onComplete }) {
   const rootRef = useRef(null);
@@ -20,6 +23,12 @@ export default function LoadingScreen({ onComplete }) {
     const tl = gsap.timeline({
       onComplete: () => {
         document.documentElement.classList.remove("overflow-hidden");
+        // every section's ScrollTrigger was created (and measured) while
+        // the page was still scroll-locked under this curtain — refresh
+        // once, right as scroll actually unlocks, to correct for any
+        // layout shift (e.g. a late-swapping web font) that happened
+        // during the lock window and was never re-measured
+        ScrollTrigger.refresh();
         onComplete?.();
       },
     });

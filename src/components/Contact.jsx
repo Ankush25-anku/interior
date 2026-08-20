@@ -50,30 +50,36 @@ export default function Contact() {
         }
       );
 
-      gsap.fromTo(
-        formRef.current,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: { trigger: formRef.current, start: "top 85%" },
-        }
-      );
+      // safe baseline first — see Services.jsx / DesignProcess.jsx for the
+      // same pattern: the form and info panel are visible the instant they
+      // mount, and the scroll-triggered reveal below is pure enhancement
+      gsap.set([formRef.current, panelRef.current], { opacity: 1, y: 0 });
 
-      gsap.fromTo(
-        panelRef.current,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          delay: 0.15,
-          scrollTrigger: { trigger: panelRef.current, start: "top 85%" },
-        }
-      );
+      ScrollTrigger.create({
+        trigger: formRef.current,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(
+            formRef.current,
+            { y: 40, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+          );
+        },
+      });
+
+      ScrollTrigger.create({
+        trigger: panelRef.current,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(
+            panelRef.current,
+            { y: 40, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.15 }
+          );
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
